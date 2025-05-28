@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Formulário em Diálogo</title>
+  <style>
+    dialog {
+      padding: 20px;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #0005;
+    }
+    form input, form button {
+      display: block;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <button onclick="document.getElementById('formDialog').showModal()">Abrir Formulário</button>
+
+  <dialog id="formDialog">
+    <form method="dialog" id="myForm">
+      <h3>Preencha os dados</h3>
+      <input type="text" name="nome" placeholder="Seu nome" required />
+      <input type="email" name="email" placeholder="Seu e-mail" required />
+      <button type="submit">Enviar</button>
+      <button type="button" onclick="document.getElementById('formDialog').close()">Cancelar</button>
+    </form>
+  </dialog>
+
+  <script>
+    document.getElementById("myForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const nome = this.nome.value;
+      const email = this.email.value;
+      alert(`Nome: ${nome}, Email: ${email}`);
+      document.getElementById('formDialog').close();
+    });
+  </script>
+
+</body>
+</html>

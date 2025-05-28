@@ -1,0 +1,80 @@
+.cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 700px;
+    
+}
+
+.botaoAdicionar {
+    padding: 7px 10px;
+    margin: 5px;
+    border-radius: 10px;
+}
+
+.tituloTabela {
+    font-family: sans-serif;
+    font-size: 3rem;
+}
+
+table {
+    max-width: 700px;
+    width: 100%;
+}
+
+table, tr, th, td {
+    border-collapse: collapse;
+    border: solid 2px black;
+}
+
+.botaoAtualizar, .botaoExcluir {
+    margin: 5px;
+    padding: 5px;
+    border-radius: 10px;
+    
+}
+
+.botaoAtualizar {
+    background-color: lightskyblue;
+}
+
+.botaoExcluir {
+    background-color: red;
+}
+
+.modais {
+    width: 300px;
+    border-radius: 30px;
+}
+
+.modal-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal-inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+}
+
+.modal-inputs > input {
+    padding: 7px;
+    border-radius: 8px;
+}
+
+.modal-adicionar {
+    background-color: gold;
+    padding: 10px;
+    margin: 10px 70px 0px 70px;
+    border-radius: 15px;
+}
