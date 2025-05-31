@@ -52,16 +52,30 @@ function adicionaClienteNaTabela(cliente){
     const botaoAtualizar = document.createElement("button");
     botaoAtualizar.appendChild(document.createTextNode("Atualizar"));
     botaoAtualizar.classList.add("botaoAtualizar");
-    //botaoAtualizar.addEventListener("click", atualizarcliente);    
+    botaoAtualizar.addEventListener("click", () =>{
+        console.log("atualizar " + cliente.id)
+    });    
     tr.appendChild(botaoAtualizar);
 
     const botaoExcluir = document.createElement("button");
     botaoExcluir.appendChild(document.createTextNode("Excluir"));
     botaoExcluir.classList.add("botaoExcluir");
-    //botaoExcluir.addEventListener("click", excluirCliente)
+    botaoExcluir.addEventListener("click", () => {
+        excluirCliente(cliente);
+    });
     tr.appendChild(botaoExcluir);
 
     tabelaClientes.appendChild(tr);
+}
+
+function excluirCliente(cliente){
+    let clientes = recuperaClientes();
+
+
+    clientes.splice(clientes.findIndex(x => x.id === cliente.id), 1);
+    console.log(clientes);
+    salvaClientesLocalStorage(clientes);
+    populaTabelaClientes();
 }
 
 function populaTabelaCarros(carros){
