@@ -8,54 +8,148 @@
 </head>
 <body>
 
-    <section>
+    <section id="clientes">
         <div class="cabecalho">
             <label class="tituloTabela">Clientes</label>
-            <button class="botaoAdicionar" modal="adicionar-clientes">Adicionar</button>
+            <button class="botaoAdicionar" modal="adicionar-cliente">Adicionar</button>
         </div>   
 
-        <table id="tabelaCLientes">
-            <tr>
-                <th>Id</th>
-                <th>Nome</th>
-                <th>CPF</th>
-                <th>Telefone</th>
-                <th>Email</th>
-            </tr>      
+        <table id="tabelaClientes">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Telefone</th>
+                    <th>Email</th>
+                </tr>
+            </thead>  
+            <tbody id="dadosClientes">
+            </tbody>    
         </table>
     </section>
 
-    <dialog id="adicionar-clientes" class="modais">
+
+    <section id="carros">
+        <div class="cabecalho">
+            <label class="tituloTabela">Carros</label>
+            <button class="botaoAdicionar" modal="adicionar-carro">Adicionar</button>
+        </div>   
+
+        <table id="tabelaCarros">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Ano</th>
+                    <th>Placa</th>
+                    <th>Disponível</th>
+                </tr>
+            </thead>  
+            <tbody id="dadosCarros">
+            </tbody>    
+        </table>
+    </section>
+
+
+    <dialog id="adicionar-cliente" class="modais">
         <form>
             <div class="modal-header" >
-                <h1>Adcionar Clientes</h1>
-                <button type="button" class="botaoFechar" modal="adicionar-clientes">X</button>
+                <h1>Adcionar Cliente</h1>
+                <button type="button" class="botaoFechar" modal="adicionar-cliente">X</button>
             </div>
             <div class="modal-body">
                 <div class="modal-inputs">
-                    <label for="nome">Nome</label>
-                    <input type="text" id="nome" name="nome">
+                    <label for="addNome">Nome</label>
+                    <input type="text" id="addNome" name="addNome">
                 </div>
                 <div class="modal-inputs">
-                    <label for="cpf">CPF</label>
-                    <input type="text" id="cpf" name="cpf">
+                    <label for="addCpf">CPF</label>
+                    <input type="text" id="addCpf" name="addCpf">
                 </div>
                 <div class="modal-inputs">
-                    <label for="telefone">Telefone</label>
-                    <input type="text" id="telefone" name="telefone">
+                    <label for="addTelefone">Telefone</label>
+                    <input type="text" id="addTelefone" name="addTelefone">
                 </div>
                 <div class="modal-inputs">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email">
+                    <label for="addEmail">Email</label>
+                    <input type="email" id="addEmail" name="addEmail">
                 </div>         
 
-                <button type="button" class="modal-adicionar", id="botaoAdicionarCliente">Adicionar</button> 
+                <button type="button" modal="adicionar-cliente", id="botaoAdicionarCliente">Adicionar</button> 
             </div>
         </form>
-
-
     </dialog>
-    
+
+
+    <dialog id="atualizar-cliente" class="modais">
+        <form>
+            <div class="modal-header" >
+                <h1>Atualizar Cliente</h1>
+                <button type="button" class="botaoFechar" modal="atualizar-cliente">X</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-inputs">
+                    <label for="attId">Id</label>
+                    <input type="text" id="attId" name="attId" disabled readonly>
+                </div>
+                <div class="modal-inputs">
+                    <label for="attNome">Nome</label>
+                    <input type="text" id="attNome" name="attNome">
+                </div>
+                <div class="modal-inputs">
+                    <label for="attCpf">CPF</label>
+                    <input type="text" id="attCpf" name="attCpf">
+                </div>
+                <div class="modal-inputs">
+                    <label for="attTelefone">Telefone</label>
+                    <input type="text" id="attTelefone" name="attTelefone">
+                </div>
+                <div class="modal-inputs">
+                    <label for="attEmail">Email</label>
+                    <input type="email" id="attEmail" name="attEmail">
+                </div>         
+                <button type="button" modal="atualizar-cliente"id="botaoAtualizarCliente">Atualizar</button> 
+            </div>
+        </form>
+    </dialog> 
+
+        <dialog id="atualizar-carro" class="modais">
+        <form>
+            <div class="modal-header" >
+                <h1>Atualizar Carro</h1>
+                <button type="button" class="botaoFechar" modal="atualizar-carro">X</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-inputs">
+                    <label for="attId">Id</label>
+                    <input type="text" id="attCarroId" name="attId" disabled readonly>
+                </div>
+                <div class="modal-inputs">
+                    <label for="attCarroMarca">Marca</label>
+                    <input type="text" id="attCarroMarca" name="attCarroMarca">
+                </div>
+                <div class="modal-inputs">
+                    <label for="attCarroModelo">Modelo</label>
+                    <input type="text" id="attCarroModelo" name="attCarroModelo">
+                </div>
+                <div class="modal-inputs">
+                    <label for="attCarroAno">Ano</label>
+                    <input type="text" id="attCarroAno" name="attCarroAno">
+                </div>
+                <div class="modal-inputs">
+                    <label for="attCarroPlaca">Placa</label>
+                    <input type="text" id="attCarroPlaca" name="attCarroPlaca">
+                </div>
+                <div class="modal-inputs">
+                    <label for="attCarroDisponivel">Disponível</label>
+                    <input type="text" id="attCarroDisponivel" name="attCarroDisponivel">
+                </div>    
+                <button type="button" modal="atualizar-carro"id="botaoAtualizarCarro">Atualizar</button> 
+            </div>
+        </form>
+    </dialog>    
     
 
 

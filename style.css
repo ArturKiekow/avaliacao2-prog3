@@ -1,8 +1,16 @@
+#clientes {
+    max-width: 60%;
+}
+
+#carros {
+    max-width: 60%;
+}
+
 .cabecalho {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 700px;
+    max-width: 100%;
     
 }
 
@@ -18,8 +26,8 @@
 }
 
 table {
-    max-width: 700px;
     width: 100%;
+    
 }
 
 table, tr, th, td {
@@ -31,7 +39,6 @@ table, tr, th, td {
     margin: 5px;
     padding: 5px;
     border-radius: 10px;
-    
 }
 
 .botaoAtualizar {
@@ -72,7 +79,7 @@ table, tr, th, td {
     border-radius: 8px;
 }
 
-.modal-adicionar {
+#botaoAdicionarCliente, #botaoAtualizarCliente {
     background-color: gold;
     padding: 10px;
     margin: 10px 70px 0px 70px;
