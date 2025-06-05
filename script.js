@@ -1,17 +1,19 @@
-let id = 11;
+let clienteid = 11;
+let carroId = 111;
 
 fetch("locadora.json").then((res) => {
     return res.json();
 }).then((info)=>{
 
+    salvaCarrosNoLocalStorage(info.carros);
     populaTabelaCarros(info.carros);
     //populaTabelaLocacoes(info.locacoes);
 
-    salvaClientesLocalStorage(info.clientes);
-    populaTabelaClientes(info.clientes);
+    salvaClientesNoLocalStorage(info.clientes);
+    populaTabelaClientes();
 });
 
-function salvaClientesLocalStorage(clientes){
+function salvaClientesNoLocalStorage(clientes){
     window.localStorage.removeItem("clientes")
     window.localStorage.setItem("clientes", JSON.stringify(clientes));
 }
@@ -22,7 +24,7 @@ function recuperaClientes(){
 
 function populaTabelaClientes(){
     limpaTabelaClientes();
-    let clientes = recuperaClientes();
+    const clientes = recuperaClientes();
     
     clientes.forEach(cliente => {
         adicionaClienteNaTabela(cliente);
@@ -80,11 +82,10 @@ function adicionaClienteNaTabela(cliente){
     dadosClientes.appendChild(tr);
 }
 
-const botaoAtualizar = document.querySelector("#botaoAtualizarCliente");
-botaoAtualizar.addEventListener("click", () => {
+const botaoAtualizarCliente = document.querySelector("#botaoAtualizarCliente");
+botaoAtualizarCliente.addEventListener("click", () => {
     atualizarCliente();
-    let modalId = botaoAtualizar.getAttribute("modal");
-    let modal = document.getElementById(modalId);
+    let modal = document.getElementById(botaoAtualizarCliente.getAttribute("modal"));
     modal.close();
 });
 
@@ -109,7 +110,7 @@ function atualizarCliente() {
     const index = listaClientes.findIndex(cliente => cliente.id === attId);
     listaClientes.splice(index, 1, clienteAtualizado);
 
-    salvaClientesLocalStorage(listaClientes);
+    salvaClientesNoLocalStorage(listaClientes);
     populaTabelaClientes();
 }
 
@@ -119,19 +120,60 @@ function excluirCliente(cliente){
 
     clientes.splice(clientes.findIndex(x => x.id === cliente.id), 1);
 
-    salvaClientesLocalStorage(clientes);
+    salvaClientesNoLocalStorage(clientes);
     populaTabelaClientes();
+}
+
+const botaoAdicionarCliente = document.querySelector("#botaoAdicionarCliente");
+
+botaoAdicionarCliente.addEventListener("click", () => {
+    adicionarCliente();
+    const modal = document.getElementById(botaoAdicionarCliente.getAttribute("modal"));
+    modal.close();
+});
+
+function adicionarCliente(){
+    const nome = document.querySelector("#addNome").value;
+    const cpf = document.querySelector("#addCpf").value;
+    const telefone = document.querySelector("#addTelefone").value;
+    const email = document.querySelector("#addEmail").value;
+
+    console.log(nome, cpf, telefone, email);
+
+    let clientes = recuperaClientes();
+
+    const cliente = {
+        id: clienteid,
+        nome: nome,
+        cpf: cpf,
+        telefone: telefone,
+        email: email,
+    }
+
+    clientes.push(cliente);
+
+    salvaClientesNoLocalStorage(clientes)
+    console.log(clientes);
+
+    populaTabelaClientes();
+    clienteid++;
 }
 
 
 // CARROS
 
-function populaTabelaCarros(carros){
-    console.log(carros);
-    limpaTabelaCarros();
+function recuperaCarros() {
+    return JSON.parse(window.localStorage.getItem("carros"));
+}
 
-     
-    
+function salvaCarrosNoLocalStorage(carros) {
+    window.localStorage.removeItem("carros");
+    window.localStorage.setItem("carros", JSON.stringify(carros));
+}
+
+function populaTabelaCarros(){
+    limpaTabelaCarros();
+    const carros = recuperaCarros();
     carros.forEach(carro => {
         adicionaCarroNaTabela(carro)
     });    
@@ -151,6 +193,7 @@ function adicionaCarroNaTabela(carro) {
     const dadosCarros = document.querySelector("#dadosCarros");
 
     const tr = document.createElement("tr");
+    tr.dataset.id = carro.id;
 
     for (const atributo in carro){
         const td = document.createElement("td");
@@ -165,19 +208,24 @@ function adicionaCarroNaTabela(carro) {
     botaoAtualizar.setAttribute("modal", "atualizar-carro");
 
     botaoAtualizar.addEventListener("click", () =>{
-        const modalId = botaoAtualizar.getAttribute("modal");
-        const modal = document.getElementById(modalId);
+        const modal = document.getElementById(botaoAtualizar.getAttribute("modal"));
         modal.showModal();
 
-        const inputs = modal.querySelectorAll("input");
-        let i = 0;
-        for (const atributo in carro){
-            inputs[i].value = carro[atributo];
-            console.log(inputs[i], carro[atributo]);
-            i++;
-        }
-
-
+        const attCarroId = document.querySelector("#attCarroId");
+        attCarroId.value = carro.id;
+        const attCarroMarca = document.querySelector("#attCarroMarca");
+        attCarroMarca.value = carro.marca;
+        const attCarroModelo = document.querySelector("#attCarroModelo");
+        attCarroModelo.value = carro.modelo;
+        const attCarroAno = document.querySelector("#attCarroAno");
+        attCarroAno.value = carro.ano;
+        const attCarroPlaca = document.querySelector("#attCarroPlaca");
+        attCarroPlaca.value = carro.placa;
+        if (carro.disponivel){
+            document.querySelector("#attCarroDisponivel").checked = true;
+        } else {
+            document.querySelector("#attCarroIndisponivel").checked = true;
+        } 
     });    
     tr.appendChild(botaoAtualizar);
 
@@ -189,21 +237,93 @@ function adicionaCarroNaTabela(carro) {
     });
     tr.appendChild(botaoExcluir);
 
-
-
     dadosCarros.appendChild(tr);
 }
 
+const botaoAtualizarCarro = document.querySelector("#botaoAtualizarCarro");
+botaoAtualizarCarro.addEventListener("click", () => {
+    atualizarCarro();
+    const modal = document.getElementById(botaoAtualizarCarro.getAttribute("modal"));
+    modal.close();
+})
+
+function atualizarCarro() {
+
+    let listaCarros = recuperaCarros();
+    console.log(listaCarros);
+    
+    const attCarroId = parseInt(document.querySelector("#attCarroId").value);
+    const attCarroMarca = document.querySelector("#attCarroMarca").value;
+    const attCarroModelo = document.querySelector("#attCarroModelo").value;
+    const attCarroAno = parseInt(document.querySelector("#attCarroAno").value);
+    const attCarroPlaca = document.querySelector("#attCarroPlaca").value;
+    const attCarroDisponivel = document.querySelector('input[name="attDisponibilidade"]:checked').value;
+
+    const carroAtualizado = {
+        id: attCarroId,
+        marca: attCarroMarca,
+        modelo: attCarroModelo,
+        ano: attCarroAno,
+        placa: attCarroPlaca,
+        disponivel: attCarroDisponivel === "true",
+    }
+
+    const index = listaCarros.findIndex(carro => carro.id === attCarroId);
+    console.log(index);
+    
+    listaCarros.splice(index, 1, carroAtualizado);
+
+    console.log(listaCarros);
+    
+    salvaCarrosNoLocalStorage(listaCarros);
+
+    populaTabelaCarros();
+}
 
 
+const botaoAdicionarCarro = document.querySelector("#botaoAdicionarCarro");
+botaoAdicionarCarro.addEventListener("click", () => {
+    adicionarCarro();
+    const modal = document.getElementById(botaoAdicionarCarro.getAttribute("modal"));
+    modal.close();
+})
 
 
+function adicionarCarro(){
+
+    const carroMarca = document.querySelector("#adicionarCarroMarca").value;
+    const carroModelo = document.querySelector("#adicionarCarroModelo").value;
+    const carroAno = parseInt(document.querySelector("#adicionarCarroAno").value);
+    const carroPlaca = document.querySelector("#adicionarCarroPlaca").value;
+    const carroDisponivel = document.querySelector('input[name="adicionarDisponibilidade"]:checked').value;
+
+    const novoCarro = {
+        id: carroId,
+        marca: carroMarca,
+        modelo: carroModelo,
+        ano: carroAno,
+        placa: carroPlaca,
+        disponivel: carroDisponivel === "true",
+    }
+
+    let listaCarros = recuperaCarros();
+
+    listaCarros.push(novoCarro);
+
+    salvaCarrosNoLocalStorage(listaCarros);
+
+    populaTabelaCarros();
+}
 
 
+function excluirCarro(carroExcluir) {
+    let listaCarros = recuperaCarros();
 
+    listaCarros.splice(listaCarros.findIndex(carro => carro.id === carroExcluir.id), 1);
 
-
-
+    salvaCarrosNoLocalStorage(listaCarros);
+    populaTabelaCarros();
+}
 
 
 
@@ -221,8 +341,7 @@ var botoesAdicionar = document.querySelectorAll(".botaoAdicionar");
 
 botoesAdicionar.forEach(botao => {
     botao.addEventListener("click", () => {
-        const modalId = botao.getAttribute("modal");
-        const modal = document.getElementById(modalId);
+        const modal = document.getElementById(botao.getAttribute("modal"));
         modal.showModal();
     })
 });
@@ -231,45 +350,9 @@ var botoesFechar = document.querySelectorAll(".botaoFechar");
 
 botoesFechar.forEach(botao => {
     botao.addEventListener("click", () => {
-        const modalId = botao.getAttribute("modal");
-        const modal = document.getElementById(modalId);
+        const modal = document.getElementById(botao.getAttribute("modal"));
         modal.close();
     })
 });
 
 
-const botaoAdicionarCliente = document.querySelector("#botaoAdicionarCliente");
-
-botaoAdicionarCliente.addEventListener("click", () => {
-    adicionarCliente();
-    const modalId = botaoAdicionarCliente.getAttribute("modal");
-    const modal = document.getElementById(modalId);
-    modal.close();
-});
-
-function adicionarCliente(){
-    const nome = document.querySelector("#addNome").value;
-    const cpf = document.querySelector("#addCpf").value;
-    const telefone = document.querySelector("#addTelefone").value;
-    const email = document.querySelector("#addEmail").value;
-
-    console.log(nome, cpf, telefone, email);
-
-    let clientes = recuperaClientes();
-
-    const cliente = {
-        id: id,
-        nome: nome,
-        cpf: cpf,
-        telefone: telefone,
-        email: email,
-    }
-
-    clientes.push(cliente);
-
-    salvaClientesLocalStorage(clientes)
-    console.log(clientes);
-
-    populaTabelaClientes();
-    id++;
-}

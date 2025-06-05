@@ -115,7 +115,45 @@
         </form>
     </dialog> 
 
-        <dialog id="atualizar-carro" class="modais">
+    <dialog id="adicionar-carro" class="modais">
+        <form>
+            <div class="modal-header" >
+                <h1>Adcionar Carro</h1>
+                <button type="button" class="botaoFechar" modal="adicionar-carro">X</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-inputs">
+                    <label for="adicionarCarroMarca">Marca</label>
+                    <input type="text" id="adicionarCarroMarca" name="adicionarCarroMarca">
+                </div>
+                <div class="modal-inputs">
+                    <label for="adicionarCarroModelo">Modelo</label>
+                    <input type="text" id="adicionarCarroModelo" name="adicionarCarroModelo">
+                </div>
+                <div class="modal-inputs">
+                    <label for="adicionarCarroAno">Ano</label>
+                    <input type="number" id="adicionarCarroAno" name="adicionarCarroAno">
+                </div>
+                <div class="modal-inputs">
+                    <label for="adicionarCarroPlaca">Placa</label>
+                    <input type="email" id="adicionarCarroPlaca" name="adicionarCarroPlaca">
+                </div>
+                <div class="modal-inputs">
+                    <span>Disponível</span>
+                    <div>
+                        <input type="radio" name="adicionarDisponibilidade" value="true" id="adicionarDisponibilidade" checked>
+                        <label for="carroDisponivel">Sim</label>
+                        <input type="radio" name="adicionarDisponibilidade" value="false" id="adicionarCarroIndisponivel">
+                        <label for="adicionarCarroIndisponivel">Não</label>
+                    </div>
+                </div>        
+
+                <button type="button" modal="adicionar-carro", id="botaoAdicionarCarro">Adicionar</button> 
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="atualizar-carro" class="modais">
         <form>
             <div class="modal-header" >
                 <h1>Atualizar Carro</h1>
@@ -123,7 +161,7 @@
             </div>
             <div class="modal-body">
                 <div class="modal-inputs">
-                    <label for="attId">Id</label>
+                    <label for="attCarroId">Id</label>
                     <input type="text" id="attCarroId" name="attId" disabled readonly>
                 </div>
                 <div class="modal-inputs">
@@ -136,21 +174,26 @@
                 </div>
                 <div class="modal-inputs">
                     <label for="attCarroAno">Ano</label>
-                    <input type="text" id="attCarroAno" name="attCarroAno">
+                    <input type="number" id="attCarroAno" name="attCarroAno">
                 </div>
                 <div class="modal-inputs">
                     <label for="attCarroPlaca">Placa</label>
                     <input type="text" id="attCarroPlaca" name="attCarroPlaca">
                 </div>
                 <div class="modal-inputs">
-                    <label for="attCarroDisponivel">Disponível</label>
-                    <input type="text" id="attCarroDisponivel" name="attCarroDisponivel">
-                </div>    
+                    <span>Disponível</span>
+                    <div>
+                        <input type="radio" name="attDisponibilidade" value="true" id="attCarroDisponivel">
+                        <label for="attCarroDisponivel">Sim</label>
+                        <input type="radio" name="attDisponibilidade" value="false" id="attCarroIndisponivel">
+                        <label for="attCarroIndisponivel">Não</label>
+                    </div>
+                </div>
+                
                 <button type="button" modal="atualizar-carro"id="botaoAtualizarCarro">Atualizar</button> 
             </div>
         </form>
-    </dialog>    
-    
+    </dialog>
 
 
     <script src="script.js"></script>
