@@ -4,13 +4,14 @@ let carroId = 111;
 fetch("locadora.json").then((res) => {
     return res.json();
 }).then((info)=>{
-
-    salvaCarrosNoLocalStorage(info.carros);
-    populaTabelaCarros(info.carros);
-    //populaTabelaLocacoes(info.locacoes);
-
     salvaClientesNoLocalStorage(info.clientes);
     populaTabelaClientes();
+
+    salvaCarrosNoLocalStorage(info.carros);
+    populaTabelaCarros();
+
+    salvaLocacoesNoLocalStorage(info.locacoes);
+    populaTabelaLocacoes();
 });
 
 function salvaClientesNoLocalStorage(clientes){
@@ -326,16 +327,117 @@ function excluirCarro(carroExcluir) {
 }
 
 
-
-
-
-
-
-
-function populaTabelaLocacoes(locacoes){
-    //console.log("Locacoes");
-    //console.log(locacoes);
+function salvaLocacoesNoLocalStorage(locacoes) {
+    window.localStorage.removeItem("locacoes");
+    window.localStorage.setItem("locacoes", JSON.stringify(locacoes));
 }
+
+function recuperaLocacoes() {
+    return JSON.parse(window.localStorage.getItem("locacoes"));
+}
+
+function limpaTabelaLocacoes() {
+    const dadosLocacoes = document.querySelector("#dadosLocacoes");
+
+    while (dadosLocacoes.firstChild){
+        dadosLocacoes.removeChild(dadosLocacoes.firstChild);
+    }
+}
+
+function populaTabelaLocacoes(){
+    limpaTabelaLocacoes();
+    const listaLocacoes = recuperaLocacoes();
+
+    listaLocacoes.forEach(locacao => {
+        adicionaLocacaoNaTabela(locacao);  
+    });
+}
+
+function adicionaLocacaoNaTabela(locacao) {
+
+    const dadosLocacoes = document.querySelector("#dadosLocacoes");
+
+    const tr = document.createElement("tr");
+    tr.dataset.id = locacao.id;
+
+    for (const atributo in locacao){
+        const td = document.createElement("td");
+        td.classList.add(atributo)
+        td.appendChild(document.createTextNode(locacao[atributo]))
+        tr.appendChild(td);  
+    }
+
+    const botaoAtualizar = document.createElement("button");
+    botaoAtualizar.appendChild(document.createTextNode("Atualizar"));
+    botaoAtualizar.classList.add("botaoAtualizar");
+    botaoAtualizar.setAttribute("modal", "atualizar-carro");
+
+/*     botaoAtualizar.addEventListener("click", () =>{
+        const modal = document.getElementById(botaoAtualizar.getAttribute("modal"));
+        modal.showModal();
+
+        const attCarroId = document.querySelector("#attlocacaoId");
+        attCarroId.value = carro.id;
+        const attCarroMarca = document.querySelector("#attCarroMarca");
+        attCarroMarca.value = carro.marca;
+        const attCarroModelo = document.querySelector("#attCarroModelo");
+        attCarroModelo.value = carro.modelo;
+        const attCarroAno = document.querySelector("#attCarroAno");
+        attCarroAno.value = carro.ano;
+        const attCarroPlaca = document.querySelector("#attCarroPlaca");
+        attCarroPlaca.value = carro.placa;
+        if (carro.disponivel){
+            document.querySelector("#attCarroDisponivel").checked = true;
+        } else {
+            document.querySelector("#attCarroIndisponivel").checked = true;
+        } 
+    });     */
+    tr.appendChild(botaoAtualizar);
+
+    const botaoExcluir = document.createElement("button");
+    botaoExcluir.appendChild(document.createTextNode("Excluir"));
+    botaoExcluir.classList.add("botaoExcluir");
+    botaoExcluir.addEventListener("click", () => {
+        excluirLocacao(locacao);
+    });
+    tr.appendChild(botaoExcluir);
+
+    dadosLocacoes.appendChild(tr);
+}
+
+
+function excluirLocacao(locacaoExcluir) {
+
+    let listaLocacoes = recuperaLocacoes();
+
+    listaLocacoes.splice(listaLocacoes.findIndex(locacao => locacao.id === locacaoExcluir.id), 1);
+
+    salvaLocacoesNoLocalStorage(listaLocacoes);
+    populaTabelaLocacoes();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 var botoesAdicionar = document.querySelectorAll(".botaoAdicionar");
 
