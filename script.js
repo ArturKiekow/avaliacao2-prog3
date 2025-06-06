@@ -1,6 +1,3 @@
-let clienteid = 11;
-let carroId = 111;
-
 fetch("locadora.json").then((res) => {
     return res.json();
 }).then((info)=>{
@@ -14,6 +11,8 @@ fetch("locadora.json").then((res) => {
     populaTabelaLocacoes();
 });
 
+//CLIENTES
+let clienteid = 11;
 function salvaClientesNoLocalStorage(clientes){
     window.localStorage.removeItem("clientes")
     window.localStorage.setItem("clientes", JSON.stringify(clientes));
@@ -51,7 +50,9 @@ function adicionaClienteNaTabela(cliente){
         td.appendChild(document.createTextNode(cliente[atributo]))
         tr.appendChild(td);      
     }
-    
+    const td = document.createElement("td");
+    td.classList.add("botoesOpcoes");
+
     const botaoAtualizar = document.createElement("button");
     botaoAtualizar.appendChild(document.createTextNode("Atualizar"));
     botaoAtualizar.classList.add("botaoAtualizar");
@@ -59,18 +60,18 @@ function adicionaClienteNaTabela(cliente){
     botaoAtualizar.addEventListener("click", () =>{
         const modal = document.querySelector("#atualizar-cliente");   
         modal.showModal();
-        const attId = document.querySelector("#attId");
+        const attId = document.querySelector("#atualizarClienteId");
         attId.value = cliente.id;
-        const attNome = document.querySelector("#attNome");
+        const attNome = document.querySelector("#atualizarClienteNome");
         attNome.value = cliente.nome;
-        const attCpf = document.querySelector("#attCpf");
+        const attCpf = document.querySelector("#atualizarClienteCpf");
         attCpf.value = cliente.cpf;
-        const attTelefone = document.querySelector("#attTelefone");
+        const attTelefone = document.querySelector("#atualizarClienteTelefone");
         attTelefone.value = cliente.telefone;
-        const attEmail = document.querySelector("#attEmail");
+        const attEmail = document.querySelector("#atualizarClienteEmail");
         attEmail.value = cliente.email;
     });    
-    tr.appendChild(botaoAtualizar);
+    td.appendChild(botaoAtualizar);
 
     const botaoExcluir = document.createElement("button");
     botaoExcluir.appendChild(document.createTextNode("Excluir"));
@@ -78,8 +79,9 @@ function adicionaClienteNaTabela(cliente){
     botaoExcluir.addEventListener("click", () => {
         excluirCliente(cliente);
     });
-    tr.appendChild(botaoExcluir);
+    td.appendChild(botaoExcluir);
 
+    tr.appendChild(td)
     dadosClientes.appendChild(tr);
 }
 
@@ -92,13 +94,12 @@ botaoAtualizarCliente.addEventListener("click", () => {
 
 function atualizarCliente() {
     let listaClientes = recuperaClientes();
-    console.log(listaClientes);
 
-    const attId = parseInt(document.querySelector("#attId").value, 10);
-    const attNome = document.querySelector("#attNome").value;
-    const attCpf = document.querySelector("#attCpf").value;
-    const attTelefone = document.querySelector("#attTelefone").value;
-    const attEmail = document.querySelector("#attEmail").value;
+    const attId = parseInt(document.querySelector("#atualizarClienteId").value, 10);
+    const attNome = document.querySelector("#atualizarClienteNome").value;
+    const attCpf = document.querySelector("#atualizarClienteCpf").value;
+    const attTelefone = document.querySelector("#atualizarClienteTelefone").value;
+    const attEmail = document.querySelector("#atualizarClienteEmail").value;
 
     let clienteAtualizado = {
         id: attId,
@@ -134,12 +135,10 @@ botaoAdicionarCliente.addEventListener("click", () => {
 });
 
 function adicionarCliente(){
-    const nome = document.querySelector("#addNome").value;
-    const cpf = document.querySelector("#addCpf").value;
-    const telefone = document.querySelector("#addTelefone").value;
-    const email = document.querySelector("#addEmail").value;
-
-    console.log(nome, cpf, telefone, email);
+    const nome = document.querySelector("#adicionarClienteNome").value;
+    const cpf = document.querySelector("#adicionarClienteCpf").value;
+    const telefone = document.querySelector("#adicionarClienteTelefone").value;
+    const email = document.querySelector("#adicionarClienteEmail").value;
 
     let clientes = recuperaClientes();
 
@@ -154,7 +153,6 @@ function adicionarCliente(){
     clientes.push(cliente);
 
     salvaClientesNoLocalStorage(clientes)
-    console.log(clientes);
 
     populaTabelaClientes();
     clienteid++;
@@ -163,6 +161,7 @@ function adicionarCliente(){
 
 // CARROS
 
+let carroId = 111;
 function recuperaCarros() {
     return JSON.parse(window.localStorage.getItem("carros"));
 }
@@ -203,6 +202,9 @@ function adicionaCarroNaTabela(carro) {
         tr.appendChild(td);  
     }
 
+    const td = document.createElement("td");
+    td.classList.add("botoesOpcoes");
+
     const botaoAtualizar = document.createElement("button");
     botaoAtualizar.appendChild(document.createTextNode("Atualizar"));
     botaoAtualizar.classList.add("botaoAtualizar");
@@ -212,23 +214,23 @@ function adicionaCarroNaTabela(carro) {
         const modal = document.getElementById(botaoAtualizar.getAttribute("modal"));
         modal.showModal();
 
-        const attCarroId = document.querySelector("#attCarroId");
+        const attCarroId = document.querySelector("#atualizarCarroId");
         attCarroId.value = carro.id;
-        const attCarroMarca = document.querySelector("#attCarroMarca");
+        const attCarroMarca = document.querySelector("#atualizarCarroMarca");
         attCarroMarca.value = carro.marca;
-        const attCarroModelo = document.querySelector("#attCarroModelo");
+        const attCarroModelo = document.querySelector("#atualizarCarroModelo");
         attCarroModelo.value = carro.modelo;
-        const attCarroAno = document.querySelector("#attCarroAno");
+        const attCarroAno = document.querySelector("#atualizarCarroAno");
         attCarroAno.value = carro.ano;
-        const attCarroPlaca = document.querySelector("#attCarroPlaca");
+        const attCarroPlaca = document.querySelector("#atualizarCarroPlaca");
         attCarroPlaca.value = carro.placa;
         if (carro.disponivel){
-            document.querySelector("#attCarroDisponivel").checked = true;
+            document.querySelector("#atualizarCarroDisponivel").checked = true;
         } else {
-            document.querySelector("#attCarroIndisponivel").checked = true;
+            document.querySelector("#atualizarCarroIndisponivel").checked = true;
         } 
     });    
-    tr.appendChild(botaoAtualizar);
+    td.appendChild(botaoAtualizar);
 
     const botaoExcluir = document.createElement("button");
     botaoExcluir.appendChild(document.createTextNode("Excluir"));
@@ -236,8 +238,8 @@ function adicionaCarroNaTabela(carro) {
     botaoExcluir.addEventListener("click", () => {
         excluirCarro(carro);
     });
-    tr.appendChild(botaoExcluir);
-
+    td.appendChild(botaoExcluir);
+    tr.appendChild(td);
     dadosCarros.appendChild(tr);
 }
 
@@ -251,14 +253,13 @@ botaoAtualizarCarro.addEventListener("click", () => {
 function atualizarCarro() {
 
     let listaCarros = recuperaCarros();
-    console.log(listaCarros);
     
-    const attCarroId = parseInt(document.querySelector("#attCarroId").value);
-    const attCarroMarca = document.querySelector("#attCarroMarca").value;
-    const attCarroModelo = document.querySelector("#attCarroModelo").value;
-    const attCarroAno = parseInt(document.querySelector("#attCarroAno").value);
-    const attCarroPlaca = document.querySelector("#attCarroPlaca").value;
-    const attCarroDisponivel = document.querySelector('input[name="attDisponibilidade"]:checked').value;
+    const attCarroId = parseInt(document.querySelector("#atualizarCarroId").value);
+    const attCarroMarca = document.querySelector("#atualizarCarroMarca").value;
+    const attCarroModelo = document.querySelector("#atualizarCarroModelo").value;
+    const attCarroAno = parseInt(document.querySelector("#atualizarCarroAno").value);
+    const attCarroPlaca = document.querySelector("#atualizarCarroPlaca").value;
+    const attCarroDisponivel = document.querySelector('input[name="atualizarDisponibilidade"]:checked').value;
 
     const carroAtualizado = {
         id: attCarroId,
@@ -270,11 +271,8 @@ function atualizarCarro() {
     }
 
     const index = listaCarros.findIndex(carro => carro.id === attCarroId);
-    console.log(index);
     
     listaCarros.splice(index, 1, carroAtualizado);
-
-    console.log(listaCarros);
     
     salvaCarrosNoLocalStorage(listaCarros);
 
@@ -314,6 +312,8 @@ function adicionarCarro(){
     salvaCarrosNoLocalStorage(listaCarros);
 
     populaTabelaCarros();
+
+    carroId++;
 }
 
 
@@ -326,6 +326,11 @@ function excluirCarro(carroExcluir) {
     populaTabelaCarros();
 }
 
+
+
+//LOCACOES
+
+let locacaoId = 1016;
 
 function salvaLocacoesNoLocalStorage(locacoes) {
     window.localStorage.removeItem("locacoes");
@@ -362,37 +367,39 @@ function adicionaLocacaoNaTabela(locacao) {
 
     for (const atributo in locacao){
         const td = document.createElement("td");
-        td.classList.add(atributo)
-        td.appendChild(document.createTextNode(locacao[atributo]))
+        td.classList.add(atributo);
+        td.appendChild(document.createTextNode(locacao[atributo]));
         tr.appendChild(td);  
     }
 
+    const td = document.createElement("td");
+    td.classList.add("botoesOpcoes");
     const botaoAtualizar = document.createElement("button");
     botaoAtualizar.appendChild(document.createTextNode("Atualizar"));
     botaoAtualizar.classList.add("botaoAtualizar");
-    botaoAtualizar.setAttribute("modal", "atualizar-carro");
+    botaoAtualizar.setAttribute("modal", "atualizar-locacao");
 
-/*     botaoAtualizar.addEventListener("click", () =>{
+    botaoAtualizar.addEventListener("click", () =>{
         const modal = document.getElementById(botaoAtualizar.getAttribute("modal"));
         modal.showModal();
 
-        const attCarroId = document.querySelector("#attlocacaoId");
-        attCarroId.value = carro.id;
-        const attCarroMarca = document.querySelector("#attCarroMarca");
-        attCarroMarca.value = carro.marca;
-        const attCarroModelo = document.querySelector("#attCarroModelo");
-        attCarroModelo.value = carro.modelo;
-        const attCarroAno = document.querySelector("#attCarroAno");
-        attCarroAno.value = carro.ano;
-        const attCarroPlaca = document.querySelector("#attCarroPlaca");
-        attCarroPlaca.value = carro.placa;
-        if (carro.disponivel){
-            document.querySelector("#attCarroDisponivel").checked = true;
-        } else {
-            document.querySelector("#attCarroIndisponivel").checked = true;
-        } 
-    });     */
-    tr.appendChild(botaoAtualizar);
+        preencheIdsCliente("atualizarLocacaoIdCliente");
+        preencheIdsCarro("atualizarLocacaoIdCarro");
+        
+        const idLocacao = document.querySelector("#atualizarLocacaoId");
+        idLocacao.value = locacao.id;
+        const idCliente = document.querySelector("#atualizarLocacaoIdCliente");
+        idCliente.value = locacao.cliente_id;
+        const idCarro = document.querySelector("#atualizarLocacaoIdCarro");
+        idCarro.value = locacao.carro_id;
+        const dataInicio = document.querySelector("#atualizarLocacaoDataInicio");
+        dataInicio.value = inverteData(locacao.data_inicio);
+        const dataFim = document.querySelector("#atualizarLocacaoDataFim");
+        dataFim.value = inverteData(locacao.data_fim);
+        const valorTotal = document.querySelector("#atualizarLocacaoValorTotal");
+        valorTotal.value = locacao.valor_total;
+    });    
+    td.appendChild(botaoAtualizar);
 
     const botaoExcluir = document.createElement("button");
     botaoExcluir.appendChild(document.createTextNode("Excluir"));
@@ -400,9 +407,85 @@ function adicionaLocacaoNaTabela(locacao) {
     botaoExcluir.addEventListener("click", () => {
         excluirLocacao(locacao);
     });
-    tr.appendChild(botaoExcluir);
-
+    td.appendChild(botaoExcluir);
+    tr.appendChild(td);
     dadosLocacoes.appendChild(tr);
+}
+
+const botaoAtualizarLocacao = document.querySelector("#botaoAtualizarLocacao");
+botaoAtualizarLocacao.addEventListener("click", ()  => {
+
+    atualizarLocacao();
+    const modal = document.getElementById(botaoAtualizarLocacao.getAttribute("modal"));
+    modal.close();
+
+});
+
+function atualizarLocacao() {
+    const idLocacao = parseInt(document.querySelector("#atualizarLocacaoId").value);
+    const idCliente = parseInt(document.querySelector("#atualizarLocacaoIdCliente").value);
+    const idCarro = parseInt(document.querySelector("#atualizarLocacaoIdCarro").value);
+    const dataInicio = inverteData(document.querySelector("#atualizarLocacaoDataInicio").value);
+    const dataFim = inverteData(document.querySelector("#atualizarLocacaoDataFim").value);
+    const valorTotal = parseFloat(document.querySelector("#atualizarLocacaoValorTotal").value);
+
+    const locacaoAtualizada = {
+        id: idLocacao,
+        cliente_id: idCliente,
+        carro_id: idCarro,
+        data_inicio: dataInicio,
+        data_fim: dataFim,
+        valor_total: valorTotal,
+    }
+
+    let listaLocacoes = recuperaLocacoes();
+
+    const index = listaLocacoes.findIndex(locacao => locacao.id === idLocacao);
+
+    listaLocacoes.splice(index, 1, locacaoAtualizada);
+
+    salvaLocacoesNoLocalStorage(listaLocacoes);
+
+    populaTabelaLocacoes();
+}
+
+function inverteData(data) {
+    const [ano, mes, dia] = data.split("-");
+    return `${dia}-${mes}-${ano}`; 
+}
+
+const botaoAdicionarLocacao = document.querySelector("#botaoAdicionarLocacao");
+botaoAdicionarLocacao.addEventListener("click", () => {
+    adicionarLocacao();
+    const modal = document.getElementById(botaoAdicionarLocacao.getAttribute("modal"));
+    modal.close();
+});
+
+function adicionarLocacao() {
+    const idCliente = parseInt(document.querySelector("#adicionarLocacaoIdCliente").value);
+    const idCarro = parseInt(document.querySelector("#adicionarLocacaoIdCarro").value);
+    const dataInicio = inverteData(document.querySelector("#adicionarLocacaoDataInicio").value);
+    const dataFim = inverteData(document.querySelector("#adicionarLocacaoDataFim").value);
+    const valorTotal = parseFloat(document.querySelector("#adicionarLocacaoValorTotal").value);
+
+    const locacao = {
+        id: locacaoId,
+        cliente_id: idCliente,
+        carro_id: idCarro,
+        data_inicio: dataInicio,
+        data_fim: dataFim,
+        valor_total: valorTotal,
+    }
+
+    let listaLocacoes = recuperaLocacoes();
+
+    listaLocacoes.push(locacao);
+
+    salvaLocacoesNoLocalStorage(listaLocacoes);
+
+    populaTabelaLocacoes();
+
+    locacaoId++;
 }
 
 
@@ -416,34 +499,97 @@ function excluirLocacao(locacaoExcluir) {
     populaTabelaLocacoes();
 }
 
+function preencheIdsCliente(idSelect) {
+    const selectIdCliente = document.querySelector(`#${idSelect}`);
+    limpaIdsClientesModalAdicionarLocacao(idSelect);
+    const listaClientes = recuperaClientes();
+
+    let listaIdClientes = [];
+    listaClientes.forEach(cliente => {
+        listaIdClientes.push(cliente.id);
+    });
+
+    listaIdClientes.forEach(id => {
+        const option = document.createElement("option");
+        option.value = id;
+        option.textContent = id;
+        selectIdCliente.appendChild(option);
+    });
+    
+}
+
+function preencheIdsCarro(idSelect) {
+    const selectIdCarro = document.querySelector(`#${idSelect}`);
+    limpaIdsCarrosModalAdicionarLocacao(idSelect);
+    const listaCarros = recuperaCarros();
+
+    let listaIdCarro = [];
+    listaCarros.forEach(carro => {
+        listaIdCarro.push(carro.id);
+    });
+
+    listaIdCarro.forEach(id => {
+        const option = document.createElement("option");
+        option.value = id;
+        option.textContent = id;
+        selectIdCarro.appendChild(option);
+    });
+    
+}
+
+function limpaIdsClientesModalAdicionarLocacao(idSelect) {
+    const selectIdCliente = document.querySelector(`#${idSelect}`);
+
+    while (selectIdCliente.firstChild){
+        selectIdCliente.removeChild(selectIdCliente.firstChild);
+    }
+}
+
+function limpaIdsCarrosModalAdicionarLocacao(idSelect) {
+    const selectIdCarro = document.querySelector(`#${idSelect}`);
+
+    while (selectIdCarro.firstChild){
+        selectIdCarro.removeChild(selectIdCarro.firstChild);
+    }
+}
+var botoesAdicionar = document.querySelectorAll(".botaoAdicionar");
+
+botoesAdicionar.forEach(botao => {
+    botao.addEventListener("click", () => {
+        const modalId = botao.getAttribute("modal");
+        const modal = document.getElementById(modalId);
+
+        if (modalId === "adicionar-locacao"){
+            preencheIdsCliente("adicionarLocacaoIdCliente");
+            preencheIdsCarro("adicionarLocacaoIdCarro");
+        }
+        modal.showModal();
+    })
+});
+
+var botoesFechar = document.querySelectorAll(".botaoFechar");
+
+botoesFechar.forEach(botao => {
+    botao.addEventListener("click", () => {
+        const modal = document.getElementById(botao.getAttribute("modal"));
+        modal.close();
+    })
+});
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//MODAIS
 
 var botoesAdicionar = document.querySelectorAll(".botaoAdicionar");
 
 botoesAdicionar.forEach(botao => {
     botao.addEventListener("click", () => {
-        const modal = document.getElementById(botao.getAttribute("modal"));
+        const modalId = botao.getAttribute("modal");
+        const modal = document.getElementById(modalId);
+
+        if (modalId === "adicionar-locacao"){
+            preencheIdsCliente("adicionarLocacaoIdCliente");
+            preencheIdsCarro("adicionarLocacaoIdCarro");
+        }
         modal.showModal();
     })
 });

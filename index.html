@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
 </head>
 <body>
 
+    
     <section id="clientes">
         <div class="cabecalho">
             <label class="tituloTabela">Clientes</label>
@@ -29,13 +30,74 @@
         </table>
     </section>
 
+    <dialog id="adicionar-cliente" class="modais">
+        <form>
+            <div class="modal-header" >
+                <h1>Adicionar Cliente</h1>
+                <button type="button" class="botaoFechar" modal="adicionar-cliente">X</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-inputs">
+                    <label for="adicionarClienteNome">Nome</label>
+                    <input type="text" id="adicionarClienteNome" name="adicionarClienteNome">
+                </div>
+                <div class="modal-inputs">
+                    <label for="adicionarClienteCpf">CPF</label>
+                    <input type="text" id="adicionarClienteCpf" name="adicionarClienteCpf">
+                </div>
+                <div class="modal-inputs">
+                    <label for="adicionarClienteTelefone">Telefone</label>
+                    <input type="text" id="adicionarClienteTelefone" name="adicionarClienteTelefone">
+                </div>
+                <div class="modal-inputs">
+                    <label for="adicionarClienteEmail">Email</label>
+                    <input type="email" id="adicionarClienteEmail" name="adicionarClienteEmail">
+                </div>         
 
-    <section id="carros">
+                <button type="button" modal="adicionar-cliente", id="botaoAdicionarCliente" class="botaoAdicionarModal">Adicionar</button> 
+            </div>
+        </form>
+    </dialog>
+
+
+    <dialog id="atualizar-cliente" class="modais">
+        <form>
+            <div class="modal-header" >
+                <h1>Atualizar Cliente</h1>
+                <button type="button" class="botaoFechar" modal="atualizar-cliente">X</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-inputs">
+                    <label for="atualizarClienteId">Id</label>
+                    <input type="number" id="atualizarClienteId" name="atualizarClienteId" disabled readonly>
+                </div>
+                <div class="modal-inputs">
+                    <label for="atualizarClienteNome">Nome</label>
+                    <input type="text" id="atualizarClienteNome" name="atualizarClienteNome">
+                </div>
+                <div class="modal-inputs">
+                    <label for="atualizarClienteCpf">CPF</label>
+                    <input type="text" id="atualizarClienteCpf" name="atualizarClienteCpf">
+                </div>
+                <div class="modal-inputs">
+                    <label for="atualizarClienteTelefone">Telefone</label>
+                    <input type="text" id="atualizarClienteTelefone" name="atualizarClienteTelefone">
+                </div>
+                <div class="modal-inputs">
+                    <label for="atualizarClienteEmail">Email</label>
+                    <input type="email" id="atualizarClienteEmail" name="atualizarClienteEmail">
+                </div>         
+                <button type="button" modal="atualizar-cliente"id="botaoAtualizarCliente" class="botaoAtualizarModal">Atualizar</button> 
+            </div>
+        </form>
+    </dialog>
+
+
+     <section id="carros">
         <div class="cabecalho">
             <label class="tituloTabela">Carros</label>
             <button class="botaoAdicionar" modal="adicionar-carro">Adicionar</button>
         </div>   
-
         <table id="tabelaCarros">
             <thead>
                 <tr>
@@ -52,95 +114,10 @@
         </table>
     </section>
 
-    <section id="locacoes">
-        <div class="cabecalho">
-            <label class="tituloTabela">Locações</label>
-            <button class="botaoAdicionar" modal="adicionar-locacao">Adicionar</button>
-        </div>   
-
-        <table id="tabelaLocacoes">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Id cliente</th>
-                    <th>Id Carro</th>
-                    <th>Data incio</th>
-                    <th>Data Fim</th>
-                    <th>Valor total</th>
-                </tr>
-            </thead>  
-            <tbody id="dadosLocacoes">
-            </tbody>    
-        </table>
-    </section>
-
-
-    <dialog id="adicionar-cliente" class="modais">
-        <form>
-            <div class="modal-header" >
-                <h1>Adcionar Cliente</h1>
-                <button type="button" class="botaoFechar" modal="adicionar-cliente">X</button>
-            </div>
-            <div class="modal-body">
-                <div class="modal-inputs">
-                    <label for="addNome">Nome</label>
-                    <input type="text" id="addNome" name="addNome">
-                </div>
-                <div class="modal-inputs">
-                    <label for="addCpf">CPF</label>
-                    <input type="text" id="addCpf" name="addCpf">
-                </div>
-                <div class="modal-inputs">
-                    <label for="addTelefone">Telefone</label>
-                    <input type="text" id="addTelefone" name="addTelefone">
-                </div>
-                <div class="modal-inputs">
-                    <label for="addEmail">Email</label>
-                    <input type="email" id="addEmail" name="addEmail">
-                </div>         
-
-                <button type="button" modal="adicionar-cliente", id="botaoAdicionarCliente">Adicionar</button> 
-            </div>
-        </form>
-    </dialog>
-
-
-    <dialog id="atualizar-cliente" class="modais">
-        <form>
-            <div class="modal-header" >
-                <h1>Atualizar Cliente</h1>
-                <button type="button" class="botaoFechar" modal="atualizar-cliente">X</button>
-            </div>
-            <div class="modal-body">
-                <div class="modal-inputs">
-                    <label for="attId">Id</label>
-                    <input type="text" id="attId" name="attId" disabled readonly>
-                </div>
-                <div class="modal-inputs">
-                    <label for="attNome">Nome</label>
-                    <input type="text" id="attNome" name="attNome">
-                </div>
-                <div class="modal-inputs">
-                    <label for="attCpf">CPF</label>
-                    <input type="text" id="attCpf" name="attCpf">
-                </div>
-                <div class="modal-inputs">
-                    <label for="attTelefone">Telefone</label>
-                    <input type="text" id="attTelefone" name="attTelefone">
-                </div>
-                <div class="modal-inputs">
-                    <label for="attEmail">Email</label>
-                    <input type="email" id="attEmail" name="attEmail">
-                </div>         
-                <button type="button" modal="atualizar-cliente"id="botaoAtualizarCliente">Atualizar</button> 
-            </div>
-        </form>
-    </dialog> 
-
     <dialog id="adicionar-carro" class="modais">
         <form>
             <div class="modal-header" >
-                <h1>Adcionar Carro</h1>
+                <h1>Adicionar Carro</h1>
                 <button type="button" class="botaoFechar" modal="adicionar-carro">X</button>
             </div>
             <div class="modal-body">
@@ -170,7 +147,7 @@
                     </div>
                 </div>        
 
-                <button type="button" modal="adicionar-carro", id="botaoAdicionarCarro">Adicionar</button> 
+                <button type="button" modal="adicionar-carro", id="botaoAdicionarCarro" class="botaoAdicionarModal">Adicionar</button> 
             </div>
         </form>
     </dialog>
@@ -183,40 +160,137 @@
             </div>
             <div class="modal-body">
                 <div class="modal-inputs">
-                    <label for="attCarroId">Id</label>
-                    <input type="text" id="attCarroId" name="attId" disabled readonly>
+                    <label for="atualizarCarroId">Id</label>
+                    <input type="number" id="atualizarCarroId" name="atualizarId" disabled readonly>
                 </div>
                 <div class="modal-inputs">
-                    <label for="attCarroMarca">Marca</label>
-                    <input type="text" id="attCarroMarca" name="attCarroMarca">
+                    <label for="atualizarCarroMarca">Marca</label>
+                    <input type="text" id="atualizarCarroMarca" name="atualizarCarroMarca">
                 </div>
                 <div class="modal-inputs">
-                    <label for="attCarroModelo">Modelo</label>
-                    <input type="text" id="attCarroModelo" name="attCarroModelo">
+                    <label for="atualizarCarroModelo">Modelo</label>
+                    <input type="text" id="atualizarCarroModelo" name="atualizarCarroModelo">
                 </div>
                 <div class="modal-inputs">
-                    <label for="attCarroAno">Ano</label>
-                    <input type="number" id="attCarroAno" name="attCarroAno">
+                    <label for="atualizarCarroAno">Ano</label>
+                    <input type="number" id="atualizarCarroAno" name="atualizarCarroAno">
                 </div>
                 <div class="modal-inputs">
-                    <label for="attCarroPlaca">Placa</label>
-                    <input type="text" id="attCarroPlaca" name="attCarroPlaca">
+                    <label for="atualizarCarroPlaca">Placa</label>
+                    <input type="text" id="atualizarCarroPlaca" name="atualizarCarroPlaca">
                 </div>
                 <div class="modal-inputs">
                     <span>Disponível</span>
                     <div>
-                        <input type="radio" name="attDisponibilidade" value="true" id="attCarroDisponivel">
-                        <label for="attCarroDisponivel">Sim</label>
-                        <input type="radio" name="attDisponibilidade" value="false" id="attCarroIndisponivel">
-                        <label for="attCarroIndisponivel">Não</label>
+                        <input type="radio" name="atualizarDisponibilidade" value="true" id="atualizarCarroDisponivel">
+                        <label for="atualizarCarroDisponivel">Sim</label>
+                        <input type="radio" name="atualizarDisponibilidade" value="false" id="atualizarCarroIndisponivel">
+                        <label for="atualizarCarroIndisponivel">Não</label>
                     </div>
                 </div>
                 
-                <button type="button" modal="atualizar-carro"id="botaoAtualizarCarro">Atualizar</button> 
+                <button type="button" modal="atualizar-carro"id="botaoAtualizarCarro" class="botaoAtualizarModal">Atualizar</button> 
             </div>
         </form>
     </dialog>
 
+    <section id="locacoes">
+        <div class="cabecalho">
+            <label class="tituloTabela">Locações</label>
+            <button class="botaoAdicionar" modal="adicionar-locacao">Adicionar</button>
+        </div>   
+
+        <table id="tabelaLocacoes">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Id Cliente</th>
+                    <th>Id Carro</th>
+                    <th>Data início</th>
+                    <th>Data Fim</th>
+                    <th>Valor total</th>
+                </tr>
+            </thead>  
+            <tbody id="dadosLocacoes">
+            </tbody>    
+        </table>
+    </section>
+
+    <dialog id="adicionar-locacao" class="modais">
+        <form>
+            <div class="modal-header" >
+                <h1>Adicionar Locação</h1>
+                <button type="button" class="botaoFechar" modal="adicionar-locacao">X</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-inputs">
+                    <span>Id Cliente</span>
+                    <select name="adicionarLocacaoIdCliente" id="adicionarLocacaoIdCliente">
+
+                    </select>
+                </div>
+                <div class="modal-inputs">
+                    <span>Id Carro</span>
+                    <select name="adicionarLocacaoIdCarro" id="adicionarLocacaoIdCarro">
+                        
+                    </select>
+                </div>
+                <div class="modal-inputs">
+                    <label for="adicionarLocacaoDataInicio">Data início</label>
+                    <input type="date" id="adicionarLocacaoDataInicio" name="adicionarLocacaoDataInicio">
+                </div>
+                <div class="modal-inputs">
+                    <label for="adicionarLocacaoDataFim">Data fim</label>
+                    <input type="date" id="adicionarLocacaoDataFim" name="adicionarLocacaoDataFim">
+                </div>
+                <div class="modal-inputs">
+                    <label for="adicionarLocacaoValorTotal">Valor total</label>
+                    <input type="number" step=any id="adicionarLocacaoValorTotal" name="adicionarLocacaoValorTotal">
+                </div>        
+
+                <button type="button" modal="adicionar-locacao", id="botaoAdicionarLocacao" class="botaoAdicionarModal">Adicionar</button> 
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="atualizar-locacao" class="modais">
+        <form>
+            <div class="modal-header" >
+                <h1>Atualizar Locação</h1>
+                <button type="button" class="botaoFechar" modal="atualizar-locacao">X</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-inputs">
+                    <label for="atualizarLocacaoId">Id</label>
+                    <input type="number" id="atualizarLocacaoId" name="atualizarLocacaoId" disabled readonly>
+                </div>
+                <div class="modal-inputs">
+                    <span>Id Cliente</span>
+                    <select name="atualizarLocacaoIdCliente" id="atualizarLocacaoIdCliente">
+                    </select>
+                </div>
+                <div class="modal-inputs">
+                    <span>Id Carro</span>
+                    <select name="atualizarLocacaoIdCarro" id="atualizarLocacaoIdCarro">
+                </select>
+                </div>
+                <div class="modal-inputs">
+                    <label for="atualizarLocacaoDataInicio">Data início</label>
+                    <input type="date" id="atualizarLocacaoDataInicio" name="atualizarLocacaoDataInicio">
+                </div>
+                <div class="modal-inputs">
+                    <label for="atualizarLocacaoDataFim">Data fim</label>
+                    <input type="date" id="atualizarLocacaoDataFim" name="atualizarLocacaoDataFim">
+                </div>
+                <div class="modal-inputs">
+                    <label for="atualizarLocacaoValorTotal">Valor total</label>
+                    <input type="number" step=any id="atualizarLocacaoValorTotal" name="atualizarLocacaoValorTotal">
+                </div>        
+
+                <button type="button" modal="atualizar-locacao"id="botaoAtualizarLocacao" class="botaoAtualizarModal">Atualizar</button> 
+            </div>
+        </form>
+    </dialog>
 
     <script src="script.js"></script>
 </body>
