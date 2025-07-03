@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carros</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+    <section id="carros">
+        <div class="cabecalho">
+            <label class="tituloTabela">Carros</label>
+            <button class="botaoAdicionar" modal="adicionar-carro">Adicionar</button>
+        </div>   
+        <table id="tabelaCarros">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Ano</th>
+                    <th>Placa</th>
+                    <th>Disponível</th>
+                    <th>Opções</th>
+                </tr>
+            </thead>  
+            <tbody id="dadosCarros">
+            </tbody>    
+        </table>
+    </section>
+
+    <dialog id="adicionar-carro" class="modais">
+        <form>
+            <div class="modal-header" >
+                <h1>Adicionar Carro</h1>
+                <button type="button" class="botaoFechar" modal="adicionar-carro">X</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-inputs">
+                    <label for="adicionarCarroMarca">Marca</label>
+                    <input type="text" id="adicionarCarroMarca" name="adicionarCarroMarca">
+                </div>
+                <div class="modal-inputs">
+                    <label for="adicionarCarroModelo">Modelo</label>
+                    <input type="text" id="adicionarCarroModelo" name="adicionarCarroModelo">
+                </div>
+                <div class="modal-inputs">
+                    <label for="adicionarCarroAno">Ano</label>
+                    <input type="number" id="adicionarCarroAno" name="adicionarCarroAno">
+                </div>
+                <div class="modal-inputs">
+                    <label for="adicionarCarroPlaca">Placa</label>
+                    <input type="email" id="adicionarCarroPlaca" name="adicionarCarroPlaca">
+                </div>
+                <div class="modal-inputs">
+                    <span>Disponível</span>
+                    <div>
+                        <input type="radio" name="adicionarDisponibilidade" value="true" id="adicionarDisponibilidade" checked>
+                        <label for="carroDisponivel">Sim</label>
+                        <input type="radio" name="adicionarDisponibilidade" value="false" id="adicionarCarroIndisponivel">
+                        <label for="adicionarCarroIndisponivel">Não</label>
+                    </div>
+                </div>        
+
+                <button type="button" modal="adicionar-carro", id="botaoAdicionarCarro" class="botaoAdicionarModal">Adicionar</button> 
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="atualizar-carro" class="modais">
+        <form>
+            <div class="modal-header" >
+                <h1>Atualizar Carro</h1>
+                <button type="button" class="botaoFechar" modal="atualizar-carro">X</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-inputs">
+                    <label for="atualizarCarroId">Id</label>
+                    <input type="number" id="atualizarCarroId" name="atualizarId" disabled readonly>
+                </div>
+                <div class="modal-inputs">
+                    <label for="atualizarCarroMarca">Marca</label>
+                    <input type="text" id="atualizarCarroMarca" name="atualizarCarroMarca">
+                </div>
+                <div class="modal-inputs">
+                    <label for="atualizarCarroModelo">Modelo</label>
+                    <input type="text" id="atualizarCarroModelo" name="atualizarCarroModelo">
+                </div>
+                <div class="modal-inputs">
+                    <label for="atualizarCarroAno">Ano</label>
+                    <input type="number" id="atualizarCarroAno" name="atualizarCarroAno">
+                </div>
+                <div class="modal-inputs">
+                    <label for="atualizarCarroPlaca">Placa</label>
+                    <input type="text" id="atualizarCarroPlaca" name="atualizarCarroPlaca">
+                </div>
+                <div class="modal-inputs">
+                    <span>Disponível</span>
+                    <div>
+                        <input type="radio" name="atualizarDisponibilidade" value="true" id="atualizarCarroDisponivel">
+                        <label for="atualizarCarroDisponivel">Sim</label>
+                        <input type="radio" name="atualizarDisponibilidade" value="false" id="atualizarCarroIndisponivel">
+                        <label for="atualizarCarroIndisponivel">Não</label>
+                    </div>
+                </div>
+                
+                <button type="button" modal="atualizar-carro"id="botaoAtualizarCarro" class="botaoAtualizarModal">Atualizar</button> 
+            </div>
+        </form>
+    </dialog>
+    
+    <script type="module" src="../ui/carros.js"></script>
+    <script type="module" src="../script.js"></script>
+    
+</body>
+</html>

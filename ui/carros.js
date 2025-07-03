@@ -1,13 +1,7 @@
 import * as carroService from "../services/carroService.js"
-populaTabelaCarros();
-function recuperaCarros() {
-    return JSON.parse(window.localStorage.getItem("carros"));
-}
 
-function salvaCarrosNoLocalStorage(carros) {
-    window.localStorage.removeItem("carros");
-    window.localStorage.setItem("carros", JSON.stringify(carros));
-}
+const dadosTabelaCarros = document.querySelector("#dadosCarros");
+await populaTabelaCarros();
 
 async function populaTabelaCarros(){
     limpaTabelaCarros();
@@ -22,76 +16,89 @@ async function populaTabelaCarros(){
 }
 
 function limpaTabelaCarros(){
-    const dadosCarros = document.querySelector("#dadosCarros");
-
-    while(dadosCarros.firstChild){
-        dadosCarros.removeChild(dadosCarros.firstChild)
+    while(dadosTabelaCarros.firstChild){
+        dadosTabelaCarros.removeChild(dadosTabelaCarros.firstChild)
     }
 }
 
-
 function adicionaCarroNaTabela(carro) {
-    const dadosCarros = document.querySelector("#dadosCarros");
+    const linha = criaLinha(carro);
+    dadosTabelaCarros.innerHTML += linha;
+}
 
-    const tr = document.createElement("tr");
-    tr.dataset.id = carro.id;
+function criaLinha(carro){
+    return `
+    <tr data-id="${carro.id}">
+        <td class="id">${carro.id}</td>
+        <td class="marca">${carro.marca}</td>
+        <td class="modelo">${carro.modelo}</td>
+        <td class="ano">${carro.ano}</td>
+        <td class="placa">${carro.placa}</td>
+        <td class="disponivel">${carro.disponivel ? "Sim" : "Não"}</td>
+        <td class="botoesOpcoes">
+            <button class="botaoAtualizar" modal="atualizar-carro">Atualizar</button>
+            <button class="botaoExcluir">Excluir</button>
+        </td>
+    </tr>
+    `
+}
 
-    for (const atributo in carro){
-        const td = document.createElement("td");
-        td.classList.add(atributo)
-        td.appendChild(document.createTextNode(carro[atributo]))
-        tr.appendChild(td);  
+dadosTabelaCarros.addEventListener("click", async (event) =>{
+    const elemento = event.target;
+    const carroId = elemento.closest("tr").dataset.id;
+
+    if (elemento.classList.contains("botaoAtualizar")){
+        const carro = await getCarro(carroId);
+        preencheModalAtualizarCarro(carro);
+        const modal = document.getElementById(elemento.getAttribute("modal"));
+        modal.showModal();
     }
 
-    const td = document.createElement("td");
-    td.classList.add("botoesOpcoes");
+    if (elemento.classList.contains("botaoExcluir")){
+        if(confirm(`Tem certeza que deseja excluir o carro com id:${carroId}`)){
+            await excluirCarro(carroId);
+            populaTabelaCarros();
+        }
+    }
+})
 
-    const botaoAtualizar = document.createElement("button");
-    botaoAtualizar.appendChild(document.createTextNode("Atualizar"));
-    botaoAtualizar.classList.add("botaoAtualizar");
-    botaoAtualizar.setAttribute("modal", "atualizar-carro");
-
-    botaoAtualizar.addEventListener("click", () =>{
-        const modal = document.getElementById(botaoAtualizar.getAttribute("modal"));
-        modal.showModal();
-
-        const attCarroId = document.querySelector("#atualizarCarroId");
-        attCarroId.value = carro.id;
-        const attCarroMarca = document.querySelector("#atualizarCarroMarca");
-        attCarroMarca.value = carro.marca;
-        const attCarroModelo = document.querySelector("#atualizarCarroModelo");
-        attCarroModelo.value = carro.modelo;
-        const attCarroAno = document.querySelector("#atualizarCarroAno");
-        attCarroAno.value = carro.ano;
-        const attCarroPlaca = document.querySelector("#atualizarCarroPlaca");
-        attCarroPlaca.value = carro.placa;
-        if (carro.disponivel){
-            document.querySelector("#atualizarCarroDisponivel").checked = true;
-        } else {
-            document.querySelector("#atualizarCarroIndisponivel").checked = true;
-        } 
-    });    
-    td.appendChild(botaoAtualizar);
-
-    const botaoExcluir = document.createElement("button");
-    botaoExcluir.appendChild(document.createTextNode("Excluir"));
-    botaoExcluir.classList.add("botaoExcluir");
-    botaoExcluir.addEventListener("click", () => {
-        excluirCarro(carro.id);
-    });
-    td.appendChild(botaoExcluir);
-    tr.appendChild(td);
-    dadosCarros.appendChild(tr);
+function preencheModalAtualizarCarro(carro){
+    const attCarroId = document.querySelector("#atualizarCarroId");
+    attCarroId.value = carro.id;
+    const attCarroMarca = document.querySelector("#atualizarCarroMarca");
+    attCarroMarca.value = carro.marca;
+    const attCarroModelo = document.querySelector("#atualizarCarroModelo");
+    attCarroModelo.value = carro.modelo;
+    const attCarroAno = document.querySelector("#atualizarCarroAno");
+    attCarroAno.value = carro.ano;
+    const attCarroPlaca = document.querySelector("#atualizarCarroPlaca");
+    attCarroPlaca.value = carro.placa;
+    if (carro.disponivel){
+    document.querySelector("#atualizarCarroDisponivel").checked = true;
+    } else {
+    document.querySelector("#atualizarCarroIndisponivel").checked = true;
+    } 
 }
 
 const botaoAtualizarCarro = document.querySelector("#botaoAtualizarCarro");
-botaoAtualizarCarro.addEventListener("click", () => {
-    atualizarCarro();
+botaoAtualizarCarro.addEventListener("click", async () => {
+    await atualizarCarro();
+    populaTabelaCarros();
     const modal = document.getElementById(botaoAtualizarCarro.getAttribute("modal"));
     modal.close();
 })
 
 async function atualizarCarro() {
+    try {
+        const carro = pegaDadosModalAtualizarCarro();
+        const response = await carroService.updateCarro(carro.id, carro);
+        alert(response);
+    } catch (erro) {
+        alert(erro);
+    } 
+}
+
+function pegaDadosModalAtualizarCarro() {
 
     const attCarroId = parseInt(document.querySelector("#atualizarCarroId").value);
     const attCarroMarca = document.querySelector("#atualizarCarroMarca").value;
@@ -101,35 +108,39 @@ async function atualizarCarro() {
     const attCarroDisponivel = document.querySelector('input[name="atualizarDisponibilidade"]:checked').value;
 
     const carroAtualizado = {
+        id: attCarroId,
         marca: attCarroMarca,
         modelo: attCarroModelo,
         ano: attCarroAno,
         placa: attCarroPlaca,
         disponivel: attCarroDisponivel === "true",
-    }
+    }    
 
-    try {
-        const response = await carroService.updateCarro(attCarroId, carroAtualizado);
-        populaTabelaCarros();
-        alert(response);
-    }catch (erro){
-        alert(erro);
-    }
+    return carroAtualizado;
 }
 
 
 const botaoAdicionarCarro = document.querySelector("#botaoAdicionarCarro");
 botaoAdicionarCarro.addEventListener("click", () => {
     adicionarCarro();
-    console.log("aaaa");
-    
     const modal = document.getElementById(botaoAdicionarCarro.getAttribute("modal"));
     modal.close();
 })
 
 
 async function adicionarCarro(){
+    try {
+        const carro = pegaDadosModalAdicionarCarro();
+        const newCarro = await carroService.createCarro(carro);
+        populaTabelaCarros();
+        alert(`Carro id:${newCarro.id} adicionado com sucesso`);
+    }catch (erro){
+        alert(erro);
+    }
+    
+}
 
+function pegaDadosModalAdicionarCarro() {
     const carroMarca = document.querySelector("#adicionarCarroMarca").value;
     const carroModelo = document.querySelector("#adicionarCarroModelo").value;
     const carroAno = parseInt(document.querySelector("#adicionarCarroAno").value);
@@ -144,21 +155,22 @@ async function adicionarCarro(){
         disponivel: carroDisponivel === "true",
     }
 
+    return carro;
+}
+
+async function getCarro(id) {
     try {
-        const newCarro = await carroService.createCarro(carro);
-        populaTabelaCarros();
-        alert(`Carro id:${newCarro.id} adicionado com sucesso`);
-    }catch (erro){
+        const carro = await carroService.getCarroById(id);
+        return carro;
+    }catch (erro) {
         alert(erro);
     }
-    
 }
 
 
 async function excluirCarro(id) {
     try {
         const response = await carroService.deleteCarro(id);
-        populaTabelaCarros();
         alert(response);
     }catch (erro) {
         alert(erro);

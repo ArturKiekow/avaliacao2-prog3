@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Locações</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+      <section id="locacoes">
+        <div class="cabecalho">
+            <label class="tituloTabela">Locações</label>
+            <button class="botaoAdicionar" modal="adicionar-locacao">Adicionar</button>
+        </div>   
+
+        <table id="tabelaLocacoes">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Id Cliente</th>
+                    <th>Id Carro</th>
+                    <th>Data início</th>
+                    <th>Data Fim</th>
+                    <th>Valor total</th>
+                    <th>Opções</th>
+                </tr>
+            </thead>  
+            <tbody id="dadosLocacoes">
+            </tbody>    
+        </table>
+    </section>
+
+    <dialog id="adicionar-locacao" class="modais">
+        <form>
+            <div class="modal-header" >
+                <h1>Adicionar Locação</h1>
+                <button type="button" class="botaoFechar" modal="adicionar-locacao">X</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-inputs">
+                    <span>Id Cliente</span>
+                    <select name="adicionarLocacaoIdCliente" id="adicionarLocacaoIdCliente">
+
+                    </select>
+                </div>
+                <div class="modal-inputs">
+                    <span>Id Carro</span>
+                    <select name="adicionarLocacaoIdCarro" id="adicionarLocacaoIdCarro">
+                        
+                    </select>
+                </div>
+                <div class="modal-inputs">
+                    <label for="adicionarLocacaoDataInicio">Data início</label>
+                    <input type="date" id="adicionarLocacaoDataInicio" name="adicionarLocacaoDataInicio">
+                </div>
+                <div class="modal-inputs">
+                    <label for="adicionarLocacaoDataFim">Data fim</label>
+                    <input type="date" id="adicionarLocacaoDataFim" name="adicionarLocacaoDataFim">
+                </div>
+                <div class="modal-inputs">
+                    <label for="adicionarLocacaoValorTotal">Valor total</label>
+                    <input type="number" step=any id="adicionarLocacaoValorTotal" name="adicionarLocacaoValorTotal">
+                </div>        
+
+                <button type="button" modal="adicionar-locacao", id="botaoAdicionarLocacao" class="botaoAdicionarModal">Adicionar</button> 
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="atualizar-locacao" class="modais">
+        <form>
+            <div class="modal-header" >
+                <h1>Atualizar Locação</h1>
+                <button type="button" class="botaoFechar" modal="atualizar-locacao">X</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-inputs">
+                    <label for="atualizarLocacaoId">Id</label>
+                    <input type="number" id="atualizarLocacaoId" name="atualizarLocacaoId" disabled readonly>
+                </div>
+                <div class="modal-inputs">
+                    <span>Id Cliente</span>
+                    <select name="atualizarLocacaoIdCliente" id="atualizarLocacaoIdCliente">
+                    </select>
+                </div>
+                <div class="modal-inputs">
+                    <span>Id Carro</span>
+                    <select name="atualizarLocacaoIdCarro" id="atualizarLocacaoIdCarro">
+                </select>
+                </div>
+                <div class="modal-inputs">
+                    <label for="atualizarLocacaoDataInicio">Data início</label>
+                    <input type="date" id="atualizarLocacaoDataInicio" name="atualizarLocacaoDataInicio">
+                </div>
+                <div class="modal-inputs">
+                    <label for="atualizarLocacaoDataFim">Data fim</label>
+                    <input type="date" id="atualizarLocacaoDataFim" name="atualizarLocacaoDataFim">
+                </div>
+                <div class="modal-inputs">
+                    <label for="atualizarLocacaoValorTotal">Valor total</label>
+                    <input type="number" step=any id="atualizarLocacaoValorTotal" name="atualizarLocacaoValorTotal">
+                </div>        
+
+                <button type="button" modal="atualizar-locacao"id="botaoAtualizarLocacao" class="botaoAtualizarModal">Atualizar</button> 
+            </div>
+        </form>
+    </dialog>
+
+    <script type="module" src="../script.js"></script>
+    <script type="module" src="../ui/locacoes.js"></script>
+</body>
+</html>

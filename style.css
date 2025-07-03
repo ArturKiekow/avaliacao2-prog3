@@ -15,6 +15,14 @@ input, option {
     font-size: large;
 }
 
+select {
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
 section {
     margin: 50px;
     max-width: 80%;

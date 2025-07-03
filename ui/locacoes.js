@@ -1,63 +1,70 @@
 import * as locacaoService from "../services/locacaoService.js"
 
-async function recuperaLocacoes() {
+const dadosTabelaLocacoes = document.querySelector("#dadosLocacoes");
+populaTabelaLocacoes();
+
+async function populaTabelaLocacoes(){
     try{
-        const locacoes = await locacaoService.getLocacoes();
-        console.log(locacoes);
-    } catch (error) {
-        alert(error.message);
+        limpaTabelaLocacoes();
+        const listaLocacoes = await locacaoService.getLocacoes();
+        listaLocacoes.forEach(locacao => {
+            adicionaLocacaoNaTabela(locacao);
+        });
+    } catch (erro) {
+        alert(erro);
     }
 }
 
 function limpaTabelaLocacoes() {
-    const dadosLocacoes = document.querySelector("#dadosLocacoes");
-
-    while (dadosLocacoes.firstChild){
-        dadosLocacoes.removeChild(dadosLocacoes.firstChild);
-    }
-}
-
-async function populaTabelaLocacoes(){
-
-
-
-    try{
-        limpaTabelaLocacoes();
-        const listaLocacoes = await locacaoService.getLocacoes();
-
-        listaLocacoes.forEach(locacao => {
-            adicionaLocacaoNaTabela(locacao);
-        });
-    } catch (error) {
-        alert(error.message);
+    while (dadosTabelaLocacoes.firstChild){
+        dadosTabelaLocacoes.removeChild(dadosTabelaLocacoes.firstChild);
     }
 }
 
 function adicionaLocacaoNaTabela(locacao) {
+    const linha = criaLinha(locacao);
+    console.log(locacao);
+    
+    dadosTabelaLocacoes.innerHTML += linha;
+}
 
-    const dadosLocacoes = document.querySelector("#dadosLocacoes");
+function criaLinha(locacao) {
+    return `
+    <tr data-id="${locacao.id}">
+        <td class="id">${locacao.id}</td>
+        <td class="cliente">${locacao.cliente.id}</td>
+        <td class="carro">${locacao.carro.id}</td>
+        <td class="data_inicio">${locacao.data_inicio}</td>
+        <td class="data_fim">${locacao.data_fim}</td>
+        <td class="valor_total">${locacao.valor_total}</td>
+        <td class="botoesOpcoes">
+            <button class="botaoAtualizar" modal="atualizar-locacao">Atualizar</button>
+            <button class="botaoExcluir">Excluir</button>
+        </td>
+    </tr>
+    `
+}
 
-    const tr = document.createElement("tr");
-    tr.dataset.id = locacao.id;
+dadosTabelaLocacoes.addEventListener("click", async (event) =>{
+    const elemento = event.target;
+    const locacaoId = elemento.closest("tr").dataset.id;
 
-    for (const atributo in locacao){
-        const td = document.createElement("td");
-        td.classList.add(atributo);
-        td.appendChild(document.createTextNode(locacao[atributo]));
-        tr.appendChild(td);  
+    if (elemento.classList.contains("botaoAtualizar")){
+        const locacao = await getLocacao(locacaoId);
+        preencheModalAtualizarLocacao(locacao);
+        const modal = document.getElementById(elemento.getAttribute("modal"));
+        modal.showModal();
     }
 
-    const td = document.createElement("td");
-    td.classList.add("botoesOpcoes");
-    const botaoAtualizar = document.createElement("button");
-    botaoAtualizar.appendChild(document.createTextNode("Atualizar"));
-    botaoAtualizar.classList.add("botaoAtualizar");
-    botaoAtualizar.setAttribute("modal", "atualizar-locacao");
+    if (elemento.classList.contains("botaoExcluir")){
+        if(confirm(`Tem certeza que deseja excluir a locação com id:${locacaoId}`)){
+            await excluirLocacao(locacaoId);
+            populaTabelaLocacoes();
+        }
+    }
+});
 
-    botaoAtualizar.addEventListener("click", () =>{
-        const modal = document.getElementById(botaoAtualizar.getAttribute("modal"));
-        modal.showModal();
-
+function preencheModalAtualizarLocacao(locacao) {
         preencheIdsCliente("atualizarLocacaoIdCliente");
         preencheIdsCarro("atualizarLocacaoIdCarro");
         
@@ -73,19 +80,9 @@ function adicionaLocacaoNaTabela(locacao) {
         dataFim.value = inverteData(locacao.data_fim);
         const valorTotal = document.querySelector("#atualizarLocacaoValorTotal");
         valorTotal.value = locacao.valor_total;
-    });    
-    td.appendChild(botaoAtualizar);
-
-    const botaoExcluir = document.createElement("button");
-    botaoExcluir.appendChild(document.createTextNode("Excluir"));
-    botaoExcluir.classList.add("botaoExcluir");
-    botaoExcluir.addEventListener("click", () => {
-        excluirLocacao(locacao);
-    });
-    td.appendChild(botaoExcluir);
-    tr.appendChild(td);
-    dadosLocacoes.appendChild(tr);
 }
+
+
 
 const botaoAtualizarLocacao = document.querySelector("#botaoAtualizarLocacao");
 botaoAtualizarLocacao.addEventListener("click", ()  => {
@@ -160,11 +157,19 @@ async function adicionarLocacao() {
     
 }
 
-
-function excluirLocacao(id) {
+async function getLocacao(id) {
     try {
-        const response = locacaoService.deleteLocacao(id);
-        populaTabelaLocacoes();
+        const locacao = await locacaoService.getLocacaoById(id);
+        return locacao;
+    }catch(erro) {
+        alert(erro)
+    }
+}
+
+async function excluirLocacao(id) {
+    try {
+        const response = await locacaoService.deleteLocacao(id);
+        alert(response);
     }catch(erro) {
         alert(erro)
     }
