@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Locações</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-      <section id="locacoes">
+    <header id="header"></header>
+    <section id="locacoes">
         <div class="cabecalho">
             <label class="tituloTabela">Locações</label>
             <button class="botaoAdicionar" modal="adicionar-locacao">Adicionar</button>
@@ -17,8 +18,8 @@
             <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Id Cliente</th>
-                    <th>Id Carro</th>
+                    <th>Cliente</th>
+                    <th>Carro</th>
                     <th>Data início</th>
                     <th>Data Fim</th>
                     <th>Valor total</th>
@@ -38,14 +39,14 @@
             </div>
             <div class="modal-body">
                 <div class="modal-inputs">
-                    <span>Id Cliente</span>
-                    <select name="adicionarLocacaoIdCliente" id="adicionarLocacaoIdCliente">
+                    <span>Cliente</span>
+                    <select name="adicionarLocacaoClientes" id="adicionarLocacaoClientes" title="clientes">
 
                     </select>
                 </div>
                 <div class="modal-inputs">
-                    <span>Id Carro</span>
-                    <select name="adicionarLocacaoIdCarro" id="adicionarLocacaoIdCarro">
+                    <span>Carro</span>
+                    <select name="adicionarLocacaoCarros" id="adicionarLocacaoCarros" title="carros">
                         
                     </select>
                 </div>
@@ -79,14 +80,14 @@
                     <input type="number" id="atualizarLocacaoId" name="atualizarLocacaoId" disabled readonly>
                 </div>
                 <div class="modal-inputs">
-                    <span>Id Cliente</span>
-                    <select name="atualizarLocacaoIdCliente" id="atualizarLocacaoIdCliente">
+                    <span>Cliente</span>
+                    <select name="atualizarLocacaoClientes" id="atualizarLocacaoClientes" title="clientes">
                     </select>
                 </div>
                 <div class="modal-inputs">
-                    <span>Id Carro</span>
-                    <select name="atualizarLocacaoIdCarro" id="atualizarLocacaoIdCarro">
-                </select>
+                    <span>Carro</span>
+                    <select name="atualizarLocacaoCarros" id="atualizarLocacaoCarros" title="carros">
+                    </select>
                 </div>
                 <div class="modal-inputs">
                     <label for="atualizarLocacaoDataInicio">Data início</label>

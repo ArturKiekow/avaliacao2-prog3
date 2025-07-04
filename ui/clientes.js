@@ -162,3 +162,18 @@ async function excluirCliente(id){
         alert(erro);
     }
 }
+
+const botaoAdicionar = document.querySelector(".botaoAdicionar");
+botaoAdicionar.addEventListener("click", () => {
+    const modalId = botaoAdicionar.getAttribute("modal");
+    const modal = document.getElementById(modalId);
+    modal.showModal();
+});
+
+const botoesFechar = document.querySelectorAll(".botaoFechar");
+botoesFechar.forEach(botao => {
+    botao.addEventListener("click", () => {
+        const modal = document.getElementById(botao.getAttribute("modal"));
+        modal.close();
+    })
+});

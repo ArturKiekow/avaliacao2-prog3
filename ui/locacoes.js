@@ -1,4 +1,6 @@
 import * as locacaoService from "../services/locacaoService.js"
+import * as clienteService from "../services/clienteService.js"
+import * as carroService from "../services/carroService.js"
 
 const dadosTabelaLocacoes = document.querySelector("#dadosLocacoes");
 populaTabelaLocacoes();
@@ -22,9 +24,7 @@ function limpaTabelaLocacoes() {
 }
 
 function adicionaLocacaoNaTabela(locacao) {
-    const linha = criaLinha(locacao);
-    console.log(locacao);
-    
+    const linha = criaLinha(locacao);    
     dadosTabelaLocacoes.innerHTML += linha;
 }
 
@@ -32,14 +32,14 @@ function criaLinha(locacao) {
     return `
     <tr data-id="${locacao.id}">
         <td class="id">${locacao.id}</td>
-        <td class="cliente">${locacao.cliente.id}</td>
-        <td class="carro">${locacao.carro.id}</td>
+        <td class="cliente">ID: ${locacao.cliente.id} - ${locacao.cliente.nome}</td>
+        <td class="carro">ID: ${locacao.carro.id} - ${locacao.carro.modelo}</td>
         <td class="data_inicio">${locacao.data_inicio}</td>
         <td class="data_fim">${locacao.data_fim}</td>
-        <td class="valor_total">${locacao.valor_total}</td>
+        <td class="valor_total">R$ ${locacao.valor_total}</td>
         <td class="botoesOpcoes">
             <button class="botaoAtualizar" modal="atualizar-locacao">Atualizar</button>
-            <button class="botaoExcluir">Excluir</button>
+            <button class="botaoExcluir">Finalizar</button>
         </td>
     </tr>
     `
@@ -64,20 +64,21 @@ dadosTabelaLocacoes.addEventListener("click", async (event) =>{
     }
 });
 
-function preencheModalAtualizarLocacao(locacao) {
-        preencheIdsCliente("atualizarLocacaoIdCliente");
-        preencheIdsCarro("atualizarLocacaoIdCarro");
+async function preencheModalAtualizarLocacao(locacao) {
+        await preencheClientes("atualizarLocacaoClientes");
+        await preencheCarrosAtualizar("atualizarLocacaoCarros", locacao.carro.id);
         
         const idLocacao = document.querySelector("#atualizarLocacaoId");
         idLocacao.value = locacao.id;
-        const idCliente = document.querySelector("#atualizarLocacaoIdCliente");
-        idCliente.value = locacao.cliente_id;
-        const idCarro = document.querySelector("#atualizarLocacaoIdCarro");
-        idCarro.value = locacao.carro_id;
+        const idCliente = document.querySelector("#atualizarLocacaoClientes");
+        idCliente.value = locacao.cliente.id;
+        const idCarro = document.querySelector("#atualizarLocacaoCarros");
+        idCarro.value = locacao.carro.id;
+        
         const dataInicio = document.querySelector("#atualizarLocacaoDataInicio");
-        dataInicio.value = inverteData(locacao.data_inicio);
+        dataInicio.value = locacao.data_inicio;        
         const dataFim = document.querySelector("#atualizarLocacaoDataFim");
-        dataFim.value = inverteData(locacao.data_fim);
+        dataFim.value = locacao.data_fim;
         const valorTotal = document.querySelector("#atualizarLocacaoValorTotal");
         valorTotal.value = locacao.valor_total;
 }
@@ -95,10 +96,10 @@ botaoAtualizarLocacao.addEventListener("click", ()  => {
 
 async function atualizarLocacao() {
     const idLocacao = parseInt(document.querySelector("#atualizarLocacaoId").value);
-    const idCliente = parseInt(document.querySelector("#atualizarLocacaoIdCliente").value);
-    const idCarro = parseInt(document.querySelector("#atualizarLocacaoIdCarro").value);
-    const dataInicio = inverteData(document.querySelector("#atualizarLocacaoDataInicio").value);
-    const dataFim = inverteData(document.querySelector("#atualizarLocacaoDataFim").value);
+    const idCliente = parseInt(document.querySelector("#atualizarLocacaoClientes").value);
+    const idCarro = parseInt(document.querySelector("#atualizarLocacaoCarros").value);
+    const dataInicio = document.querySelector("#atualizarLocacaoDataInicio").value;
+    const dataFim = document.querySelector("#atualizarLocacaoDataFim").value;
     const valorTotal = parseFloat(document.querySelector("#atualizarLocacaoValorTotal").value);
 
     const locacaoAtualizada = {
@@ -119,11 +120,6 @@ async function atualizarLocacao() {
 
 }
 
-function inverteData(data) {
-    const [ano, mes, dia] = data.split("-");
-    return `${dia}-${mes}-${ano}`; 
-}
-
 const botaoAdicionarLocacao = document.querySelector("#botaoAdicionarLocacao");
 botaoAdicionarLocacao.addEventListener("click", () => {
     adicionarLocacao();
@@ -132,10 +128,11 @@ botaoAdicionarLocacao.addEventListener("click", () => {
 });
 
 async function adicionarLocacao() {
-    const idCliente = parseInt(document.querySelector("#adicionarLocacaoIdCliente").value);
-    const idCarro = parseInt(document.querySelector("#adicionarLocacaoIdCarro").value);
-    const dataInicio = inverteData(document.querySelector("#adicionarLocacaoDataInicio").value);
-    const dataFim = inverteData(document.querySelector("#adicionarLocacaoDataFim").value);
+    const idCliente = parseInt(document.querySelector("#adicionarLocacaoClientes").value);
+    const idCarro = parseInt(document.querySelector("#adicionarLocacaoCarros").value);
+    
+    const dataInicio = document.querySelector("#adicionarLocacaoDataInicio").value;
+    const dataFim = document.querySelector("#adicionarLocacaoDataFim").value;
     const valorTotal = parseFloat(document.querySelector("#adicionarLocacaoValorTotal").value);
 
     const locacao = {
@@ -166,6 +163,25 @@ async function getLocacao(id) {
     }
 }
 
+async function recuperaClientes() {
+    try {
+        const clientes = await clienteService.getClientes();
+        return clientes;
+    }catch(erro) {
+        alert(erro)
+    }
+}
+
+async function recuperaCarros() {
+    try {
+        const carros = await carroService.getCarros();
+        return carros;
+    }catch(erro) {
+        alert(erro)
+    }
+}
+
+
 async function excluirLocacao(id) {
     try {
         const response = await locacaoService.deleteLocacao(id);
@@ -175,79 +191,82 @@ async function excluirLocacao(id) {
     }
 }
 
-function preencheIdsCliente(idSelect) {
-    const selectIdCliente = document.querySelector(`#${idSelect}`);
-    limpaIdsClientesModalAdicionarLocacao(idSelect);
-    const listaClientes = recuperaClientes();
+async function preencheClientes(idSelect) {
+    const selectClientes = document.querySelector(`#${idSelect}`);
+    limpaClientesModalLocacao(idSelect);
+    const listaClientes = await recuperaClientes();
 
-    let listaIdClientes = [];
     listaClientes.forEach(cliente => {
-        listaIdClientes.push(cliente.id);
-    });
-
-    listaIdClientes.forEach(id => {
         const option = document.createElement("option");
-        option.value = id;
-        option.textContent = id;
-        selectIdCliente.appendChild(option);
+        option.value = cliente.id;
+        option.textContent = `ID: ${cliente.id} - ${cliente.nome}`;
+        selectClientes.appendChild(option);
     });
-    
+ 
 }
 
-function preencheIdsCarro(idSelect) {
-    const selectIdCarro = document.querySelector(`#${idSelect}`);
-    limpaIdsCarrosModalAdicionarLocacao(idSelect);
-    const listaCarros = recuperaCarros();
+async function preencheCarros(idSelect) {
+    const selectCarro = document.querySelector(`#${idSelect}`);
+    limpaCarrosModalLocacao(idSelect);
+    const listaCarros = await recuperaCarros();
 
-    let listaIdCarro = [];
     listaCarros.forEach(carro => {
-        listaIdCarro.push(carro.id);
+        if (carro.disponivel){
+            const option = document.createElement("option");
+        option.value = carro.id;
+        option.textContent = `ID: ${carro.id} - ${carro.modelo}`;
+        selectCarro.appendChild(option);
+        }
     });
-
-    listaIdCarro.forEach(id => {
-        const option = document.createElement("option");
-        option.value = id;
-        option.textContent = id;
-        selectIdCarro.appendChild(option);
-    });
-    
 }
 
-function limpaIdsClientesModalAdicionarLocacao(idSelect) {
-    const selectIdCliente = document.querySelector(`#${idSelect}`);
+async function preencheCarrosAtualizar(idSelect, idCarroAtual) {
+    const selectCarro = document.querySelector(`#${idSelect}`);
+    limpaCarrosModalLocacao(idSelect);
+    const listaCarros = await recuperaCarros();
 
-    while (selectIdCliente.firstChild){
-        selectIdCliente.removeChild(selectIdCliente.firstChild);
+    listaCarros.forEach(carro => {
+        if (carro.disponivel || carro.id == idCarroAtual) {
+            const option = document.createElement("option");
+            option.value = carro.id;
+            option.textContent = `ID: ${carro.id} - ${carro.modelo}`;
+            selectCarro.appendChild(option);
+        }
+    });
+}
+
+function limpaClientesModalLocacao(idSelect) {
+    const selectCliente = document.querySelector(`#${idSelect}`);
+    
+    if (selectCliente.hasChildNodes) {
+        while (selectCliente.firstChild){
+            selectCliente.removeChild(selectCliente.firstChild);
+        }
     }
 }
 
-function limpaIdsCarrosModalAdicionarLocacao(idSelect) {
+function limpaCarrosModalLocacao(idSelect) {
     const selectIdCarro = document.querySelector(`#${idSelect}`);
 
     while (selectIdCarro.firstChild){
         selectIdCarro.removeChild(selectIdCarro.firstChild);
     }
 }
-var botoesAdicionar = document.querySelectorAll(".botaoAdicionar");
+ 
+const botaoAdicionar = document.querySelector(".botaoAdicionar");
+botaoAdicionar.addEventListener("click", () => {
+    const modalId = botaoAdicionar.getAttribute("modal");
+    const modal = document.getElementById(modalId);
 
-botoesAdicionar.forEach(botao => {
-    botao.addEventListener("click", () => {
-        const modalId = botao.getAttribute("modal");
-        const modal = document.getElementById(modalId);
-
-        if (modalId === "adicionar-locacao"){
-            preencheIdsCliente("adicionarLocacaoIdCliente");
-            preencheIdsCarro("adicionarLocacaoIdCarro");
-        }
-        modal.showModal();
-    })
+    preencheClientes("adicionarLocacaoClientes");
+    preencheCarros("adicionarLocacaoCarros");
+    modal.showModal();
 });
 
-var botoesFechar = document.querySelectorAll(".botaoFechar");
-
+const botoesFechar = document.querySelectorAll(".botaoFechar");
 botoesFechar.forEach(botao => {
     botao.addEventListener("click", () => {
         const modal = document.getElementById(botao.getAttribute("modal"));
         modal.close();
     })
-})
+});
